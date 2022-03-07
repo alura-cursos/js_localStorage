@@ -1,41 +1,37 @@
-const form = document.getElementById("novoItem") 
+const form = document.getElementById("novoItem")
 const lista = document.getElementById("lista")
-const itens = JSON.parse(localStorage.getItem("itens")) || []  
+const itens = []
 
-itens.forEach( (elemento) => {    
-    criaElemento(elemento)
-} )
-
-form.addEventListener("submit", (evento) => {  
+form.addEventListener("submit", (evento) => {
     evento.preventDefault()
 
     const nome = evento.target.elements['nome']
     const quantidade = evento.target.elements['quantidade']
 
-    const itemAtual = {
-    "nome": nome.value,
-    "quantidade": quantidade.value
-    }
-
-    criaElemento(itemAtual)
-
-    itens.push(itemAtual)
-
-    localStorage.setItem("itens", JSON.stringify(itens))
+    criaElemento(nome.value, quantidade.value)
 
     nome.value = ""
     quantidade.value = ""
 })
 
-function criaElemento(item) {  
+function criaElemento(nome, quantidade) {
     const novoItem = document.createElement('li')
     novoItem.classList.add("item")
 
     const numeroItem = document.createElement('strong')
-    numeroItem.innerHTML = item.quantidade
+    numeroItem.innerHTML = quantidade
     novoItem.appendChild(numeroItem)
 
-    novoItem.innerHTML += item.nome
+    novoItem.innerHTML += nome
 
     lista.appendChild(novoItem)
+
+    const itemAtual = {
+        "nome": nome,
+        "quantidade": quantidade
+    }
+
+    itens.push(itemAtual)
+
+    localStorage.setItem("item", JSON.stringify(itens))
 }
